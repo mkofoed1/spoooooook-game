@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Mirror;
 
-public class GameEnding : MonoBehaviour
+public class GameEnding : NetworkBehaviour
 {
     public float fadeDuration = 1f;
     public float displayImageDuration = 1f;
@@ -16,6 +17,14 @@ public class GameEnding : MonoBehaviour
     float m_Timer;
     bool m_HasAudioPlayed;
     
+    void Start()
+    {
+        if(isLocalPlayer)
+        {
+            player = this.gameObject;
+        }
+    }
+
     void OnTriggerEnter (Collider other)
     {
         if (other.gameObject == player)
@@ -24,8 +33,10 @@ public class GameEnding : MonoBehaviour
         }
     }
 
+[ClientRpc]
     public void CaughtPlayer ()
     {
+        Debug.Log("hej");
         m_IsPlayerCaught = true;
     }
 

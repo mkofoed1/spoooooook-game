@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Mirror;
 
-public class WaypointPatrol : MonoBehaviour
+public class WaypointPatrol : NetworkBehaviour
 {
     public NavMeshAgent navMeshAgent;
     public Transform[] waypoints;

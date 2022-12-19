@@ -1,19 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Observer : MonoBehaviour
+public class Observer : NetworkBehaviour
 {
     public Transform player;
     public GameEnding gameEnding;
 
     bool m_IsPlayerInRange;
-
+    
     void OnTriggerEnter (Collider other)
     {
         if (other.transform == player)
         {
             m_IsPlayerInRange = true;
+            Test();
         }
     }
 
@@ -35,11 +37,19 @@ public class Observer : MonoBehaviour
             
             if (Physics.Raycast (ray, out raycastHit))
             {
+                
                 if (raycastHit.collider.transform == player)
-                {
-                    gameEnding.CaughtPlayer ();
+                {      
+                    
                 }
             }
         }
     }
+
+    void Test()
+    {   
+        Debug.Log("hello");
+        gameEnding.CaughtPlayer ();
+    }
+
 }

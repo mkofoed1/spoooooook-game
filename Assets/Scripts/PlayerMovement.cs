@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
+using Cinemachine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public float turnSpeed = 20f;
 
@@ -11,16 +13,44 @@ public class PlayerMovement : MonoBehaviour
     AudioSource m_AudioSource;
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
+    [SerializeField] private CinemachineVirtualCamera cam;
+    [SerializeField] public GameObject ghost;
+    [SerializeField] private GameObject ghost1;
+    [SerializeField] private GameObject ghost2;
+    [SerializeField] private GameObject ghost3;
+    [SerializeField] private GameObject ghost4;
 
     void Start ()
     {
         m_Animator = GetComponent<Animator> ();
         m_Rigidbody = GetComponent<Rigidbody> ();
         m_AudioSource = GetComponent<AudioSource> ();
+
+        if(isLocalPlayer)
+        {
+            cam = CinemachineVirtualCamera.FindObjectOfType<CinemachineVirtualCamera>();
+            cam.LookAt = this.gameObject.transform;
+            cam.Follow = this.gameObject.transform;
+            ghost = GameObject.Find("Ghost1");
+            ghost.GetComponent<Observer>().player = this.transform;
+            ghost1 = GameObject.Find("Ghost2");
+            ghost1.GetComponent<Observer>().player = this.gameObject.transform;
+            ghost2 = GameObject.Find("Ghost3");
+            ghost2.GetComponent<Observer>().player = this.gameObject.transform;
+            ghost3 = GameObject.Find("Ghost4");
+            ghost3.GetComponent<Observer>().player = this.gameObject.transform;
+            ghost4 = GameObject.Find("Ghost5");
+            ghost4.GetComponent<Observer>().player = this.gameObject.transform;
+        }
     }
+
 
     void FixedUpdate ()
     {
+        if(!isLocalPlayer)
+        {
+            return;
+        }
         float horizontal = Input.GetAxis ("Horizontal");
         float vertical = Input.GetAxis ("Vertical");
         
