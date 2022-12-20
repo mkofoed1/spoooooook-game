@@ -8,6 +8,7 @@ using TMPro;
 public class PlayerMovement : NetworkBehaviour
 {
     // Player References
+    [SyncVar]
     public string playername;
     [SyncVar]
     public int score;
@@ -50,13 +51,15 @@ public class PlayerMovement : NetworkBehaviour
     }
     void FixedUpdate ()
     {
-        // Nameplate Rotate towards Camera
-        nameplate.transform.rotation = Quaternion.LookRotation(cam.transform.position - transform.position) * Quaternion.Euler(0,180,0);
+
 
         if(!isLocalPlayer)
         {
             return;
         }
+
+        // Nameplate Rotate towards Camera
+        nameplate.transform.rotation = Quaternion.LookRotation(cam.transform.position - transform.position) * Quaternion.Euler(0, 180, 0);
         float horizontal = Input.GetAxis ("Horizontal");
         float vertical = Input.GetAxis ("Vertical");
         

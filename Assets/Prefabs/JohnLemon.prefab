@@ -1053,7 +1053,7 @@ MonoBehaviour:
   syncInterval: 0.1
   playername: 
   score: 0
-  nameplate: {fileID: 0}
+  nameplate: {fileID: 4060267492187099021}
   turnSpeed: 20
   cam: {fileID: 0}
 --- !u!114 &1842182385281095024

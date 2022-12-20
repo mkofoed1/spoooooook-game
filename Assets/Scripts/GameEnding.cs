@@ -82,6 +82,7 @@ public class GameEnding : NetworkBehaviour
         {
             if (doRestart)
             {
+                
                 SceneManager.LoadScene (0);
                 //StartCoroutine(RequestHandler.Instance.DeletePlayer(spiller.name));
             }
