@@ -99,7 +99,8 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (other.tag == "coin")
         {
-            score = score + 1;
+            score++;
+            StartCoroutine(RequestHandler.Instance.UpdatePlayer(playername, score));
         }
     }
 }
