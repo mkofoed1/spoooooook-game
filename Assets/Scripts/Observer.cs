@@ -7,13 +7,17 @@ public class Observer : NetworkBehaviour
 {
     public Transform player;
     public GameEnding gameEnding;
+    private GameObject spiller;
 
     bool m_IsPlayerInRange;
     
     void OnTriggerEnter (Collider other)
     {
+        spiller = other.gameObject;
+        Debug.Log(spiller.GetComponent<PlayerMovement>().playername);
         if (other.transform == player)
         {
+            StartCoroutine(RequestHandler.Instance.DeletePlayer(spiller.GetComponent<PlayerMovement>().playername));
             m_IsPlayerInRange = true;
             Test();
         }
@@ -48,7 +52,6 @@ public class Observer : NetworkBehaviour
 
     void Test()
     {   
-        Debug.Log("hello");
         gameEnding.CaughtPlayer ();
     }
 

@@ -30,13 +30,13 @@ public class GameEnding : NetworkBehaviour
         if (other.gameObject == player)
         {
             m_IsPlayerAtExit = true;
+
         }
     }
 
 [ClientRpc]
     public void CaughtPlayer ()
     {
-        Debug.Log("hej");
         m_IsPlayerCaught = true;
     }
 
@@ -68,10 +68,12 @@ public class GameEnding : NetworkBehaviour
             if (doRestart)
             {
                 SceneManager.LoadScene (0);
+                //StartCoroutine(RequestHandler.Instance.DeletePlayer(spiller.name));
             }
             else
             {
                 Application.Quit ();
+                //StartCoroutine(RequestHandler.Instance.DeletePlayer(spiller.name));
             }
         }
     }

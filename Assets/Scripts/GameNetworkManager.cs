@@ -21,14 +21,49 @@ public class GameNetworkManager : NetworkManager
     public override void OnClientConnect()
     {
         base.OnClientConnect();
-
-        CreatePlayer playermsg = new CreatePlayer
+        Debug.Log(NetworkServer.connections.Count);
+        switch (NetworkServer.connections.Count)
         {
-            name = "Joe Mama",
-            score = 0,
-        };
+            case 0:
+                CreatePlayer playermsg3 = new CreatePlayer
+                {
+                    name = "Joe dad",
+                    score = 0,
+                };
+                NetworkClient.Send(playermsg3);
+            break;
+            
+            case 1:
+                CreatePlayer playermsg = new CreatePlayer
+                {
+                    name = "Joe Mama",
+                    score = 0,
+                };
+                NetworkClient.Send(playermsg);
+            break;
+            
+            case 2:
+                CreatePlayer playermsg1 = new CreatePlayer
+                {
+                    name = "karl",
+                    score = 0,
+                };
+                NetworkClient.Send(playermsg1);
+            break;
+            
 
-        NetworkClient.Send(playermsg);
+            default:
+                CreatePlayer playermsg2 = new CreatePlayer
+                {
+                    name = "julemand",
+                    score = 0,
+                };
+                NetworkClient.Send(playermsg2);
+            break;
+        }
+        
+
+        
     }
 
     void OnCreatePlayer(NetworkConnectionToClient conn, CreatePlayer msg)
