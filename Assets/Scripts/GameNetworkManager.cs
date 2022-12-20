@@ -16,7 +16,6 @@ public class GameNetworkManager : NetworkManager
 
         NetworkServer.RegisterHandler<CreatePlayer>(OnCreatePlayer);
         //foreach(string conn in )
-        Debug.Log(NetworkServer.connections.Values.ToString());
     }
 
     public override void OnClientConnect()
@@ -38,7 +37,7 @@ public class GameNetworkManager : NetworkManager
 
         playerObj.GetComponent<PlayerMovement>().playername = msg.name;
         playerObj.GetComponent<PlayerMovement>().score = msg.score;
-
+        StartCoroutine(RequestHandler.Instance.CreatePlayer(msg.name, msg.score));
         NetworkServer.AddPlayerForConnection(conn, playerObj);
     }
 }

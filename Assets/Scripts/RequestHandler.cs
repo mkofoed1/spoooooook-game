@@ -5,11 +5,28 @@ using UnityEngine.Networking;
 
 public class RequestHandler : MonoBehaviour
 {
+    // Creates an instance of Game Manager
+    private static RequestHandler _instance;
+    public static RequestHandler Instance
+    {
+        get
+        {
+            if (_instance is null)
+                Debug.LogError("Game Manager is NULL");
+
+            return _instance;
+        }
+    }
     //The local address of the server - URI (Uniform Resource Identifier)
     //private string URI = "http://localhost:3000/";
 
     //The onine address of the server - URI (Uniform Resource Identifier)
     private string URI = "http://spiltek.eu-4.evennode.com/";
+
+    private void Awake()
+    {
+        _instance = this;
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -23,6 +40,8 @@ public class RequestHandler : MonoBehaviour
     {
         
     }
+
+
 
     //Tests the HTTP connection
     public IEnumerator CreatePlayer(string name, int score)
