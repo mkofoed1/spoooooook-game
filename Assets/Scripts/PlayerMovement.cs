@@ -6,14 +6,24 @@ using Cinemachine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    public float turnSpeed = 20f;
+    // Player References
+    public string name;
+    public int score;
 
+    // Movement References
+    public float turnSpeed = 20f;
+    Vector3 m_Movement;
+    Quaternion m_Rotation = Quaternion.identity;
+
+    // Animation & Audio
     Animator m_Animator;
     Rigidbody m_Rigidbody;
     AudioSource m_AudioSource;
-    Vector3 m_Movement;
-    Quaternion m_Rotation = Quaternion.identity;
+
+    // Camera
     [SerializeField] private CinemachineVirtualCamera cam;
+
+    // Ghost References
     [SerializeField] public GameObject ghost;
     [SerializeField] private GameObject ghost1;
     [SerializeField] private GameObject ghost2;

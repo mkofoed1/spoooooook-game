@@ -6,13 +6,16 @@ using UnityEngine.Networking;
 public class RequestHandler : MonoBehaviour
 {
     //The local address of the server - URI (Uniform Resource Identifier)
-    private string URI = "http://localhost:3000/";
+    //private string URI = "http://localhost:3000/";
+
+    //The onine address of the server - URI (Uniform Resource Identifier)
+    private string URI = "http://spiltek.eu-4.evennode.com/";
 
     // Start is called before the first frame update
     private void Start()
     {
         //Starts GetPlayer() as a Coroutine, i.e. a routine that can span several frames, note coroutines needs to be of the type IEnumerator
-        StartCoroutine(DeletePlayer("karsten"));
+        StartCoroutine(ReadPlayer("Hej Magnus"));
     }
 
     // Update is called once per frame
@@ -22,7 +25,7 @@ public class RequestHandler : MonoBehaviour
     }
 
     //Tests the HTTP connection
-    private IEnumerator CreatePlayer(string name, int score)
+    public IEnumerator CreatePlayer(string name, int score)
     {
         //Sends a Web Request - HTTP Get "/createPlayer"
         UnityWebRequest request = UnityWebRequest.Get($"{URI}createPlayer?name={name}&score={score}");
@@ -55,14 +58,15 @@ public class RequestHandler : MonoBehaviour
         {
             Debug.Log("Received response: ");
             Debug.Log(request.downloadHandler.text);
+
+            
         }
         else
         {
             Debug.Log("Error - No response received");
         }
     }
-
-    private IEnumerator ReadPlayer(string name)
+    public IEnumerator ReadPlayer(string name)
     {
         //Sends a Web Request - HTTP Get "/createPlayer"
         UnityWebRequest request = UnityWebRequest.Get($"{URI}readPlayer?name={name}");
@@ -101,7 +105,7 @@ public class RequestHandler : MonoBehaviour
             Debug.Log("Error - No response received");
         }
     }
-    private IEnumerator UpdatePlayer(string name, int score)
+    public IEnumerator UpdatePlayer(string name, int score)
 {
     //Sends a Web Request - HTTP Get "/createPlayer"
     UnityWebRequest request = UnityWebRequest.Get($"{URI}updatePlayer?name={name}&score={score}");
@@ -140,8 +144,7 @@ public class RequestHandler : MonoBehaviour
         Debug.Log("Error - No response received");
     }
 }
-
-    private IEnumerator DeletePlayer(string name)
+    public IEnumerator DeletePlayer(string name)
     {
         //Sends a Web Request - HTTP Get "/createPlayer"
         UnityWebRequest request = UnityWebRequest.Get($"{URI}deletePlayer?name={name}");
