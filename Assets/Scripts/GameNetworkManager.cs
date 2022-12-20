@@ -84,5 +84,11 @@ public class GameNetworkManager : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, playerObj);
     }
 
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerDisconnect(conn);
+        Debug.Log(conn);
+    }
+
 
 }

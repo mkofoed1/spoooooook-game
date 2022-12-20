@@ -49,12 +49,15 @@ public class PlayerMovement : NetworkBehaviour
     {
         nameplate.GetComponentInChildren<TextMeshProUGUI>().text = playername + "\n" + "Score: " + score;
     }
+    
     void FixedUpdate ()
     {
 
 
         if(!isLocalPlayer)
         {
+            if (nameplate != null)
+            nameplate.transform.rotation = Quaternion.LookRotation(cam.transform.position - transform.position) * Quaternion.Euler(0, 180, 0);
             return;
         }
 

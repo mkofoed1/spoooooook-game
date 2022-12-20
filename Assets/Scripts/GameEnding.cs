@@ -13,8 +13,6 @@ public class GameEnding : NetworkBehaviour
     public CanvasGroup caughtBackgroundImageCanvasGroup;
     public AudioSource caughtAudio;
 
-    bool m_IsPlayerAtExit;
-    bool m_IsPlayerCaught;
     float m_Timer;
     bool m_HasAudioPlayed;
     
@@ -30,9 +28,8 @@ public class GameEnding : NetworkBehaviour
     {
         if (other.gameObject == player)
         {
-            m_IsPlayerAtExit = true;
             NetworkIdentity networkIdentity = other.gameObject.GetComponent<NetworkIdentity>();
-
+            StartCoroutine(EndLevel(networkIdentity.connectionToClient, true, exitAudio));
 
         }
     }
@@ -43,32 +40,23 @@ public class GameEnding : NetworkBehaviour
         TargetEndLevel(networkIdentity.connectionToClient);
     }
 
-    void Update ()
-    {
-        if (m_IsPlayerAtExit)
-        {
-            StartCoroutine(EndLevel (exitBackgroundImageCanvasGroup, false, exitAudio));
-        }
-        else if (m_IsPlayerCaught)
-        {
-            StartCoroutine(EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio));
-        }
-    }
-
     [TargetRpc]
     void TargetEndLevel(NetworkConnection target)
     {
-        StartCoroutine(EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio));
+        
+        StartCoroutine(EndLevel(target, false, caughtAudio));
+        
     }
     
     [Client]
-    IEnumerator EndLevel (CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource)
+    IEnumerator EndLevel (NetworkConnection target, bool Win, AudioSource audioSource)
     {
         if (!m_HasAudioPlayed)
         {
             audioSource.Play();
             m_HasAudioPlayed = true;
         }
+        CanvasGroup imageCanvasGroup = Win ? exitBackgroundImageCanvasGroup : caughtBackgroundImageCanvasGroup;
 
         while(!(m_Timer > fadeDuration + displayImageDuration))
         {
@@ -80,15 +68,17 @@ public class GameEnding : NetworkBehaviour
 
         if (m_Timer > fadeDuration + displayImageDuration)
         {
-            if (doRestart)
+            if (Win)
             {
-                
-                SceneManager.LoadScene (0);
+
+                Application.Quit();
                 //StartCoroutine(RequestHandler.Instance.DeletePlayer(spiller.name));
             }
             else
             {
-                Application.Quit ();
+
+                target.Disconnect();
+                
                 //StartCoroutine(RequestHandler.Instance.DeletePlayer(spiller.name));
             }
         }
