@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 
@@ -30,38 +31,52 @@ public class GameEnding : NetworkBehaviour
         if (other.gameObject == player)
         {
             m_IsPlayerAtExit = true;
+            NetworkIdentity networkIdentity = other.gameObject.GetComponent<NetworkIdentity>();
+
 
         }
     }
 
-[ClientRpc]
-    public void CaughtPlayer ()
+    [Server]
+    public void CaughtPlayer (NetworkIdentity networkIdentity)
     {
-        m_IsPlayerCaught = true;
+        TargetEndLevel(networkIdentity.connectionToClient);
     }
 
     void Update ()
     {
         if (m_IsPlayerAtExit)
         {
-            EndLevel (exitBackgroundImageCanvasGroup, false, exitAudio);
+            StartCoroutine(EndLevel (exitBackgroundImageCanvasGroup, false, exitAudio));
         }
         else if (m_IsPlayerCaught)
         {
-            EndLevel (caughtBackgroundImageCanvasGroup, true, caughtAudio);
+            StartCoroutine(EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio));
         }
     }
 
-    void EndLevel (CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource)
+    [TargetRpc]
+    void TargetEndLevel(NetworkConnection target)
+    {
+        StartCoroutine(EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio));
+    }
+    
+    [Client]
+    IEnumerator EndLevel (CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource)
     {
         if (!m_HasAudioPlayed)
         {
             audioSource.Play();
             m_HasAudioPlayed = true;
         }
-            
-        m_Timer += Time.deltaTime;
-        imageCanvasGroup.alpha = m_Timer / fadeDuration;
+
+        while(!(m_Timer > fadeDuration + displayImageDuration))
+        {
+            m_Timer += Time.deltaTime;
+            imageCanvasGroup.alpha = m_Timer / fadeDuration;
+            yield return new WaitForEndOfFrame();
+        }
+        
 
         if (m_Timer > fadeDuration + displayImageDuration)
         {

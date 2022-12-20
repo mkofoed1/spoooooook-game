@@ -75,4 +75,6 @@ public class GameNetworkManager : NetworkManager
         StartCoroutine(RequestHandler.Instance.CreatePlayer(msg.name, msg.score));
         NetworkServer.AddPlayerForConnection(conn, playerObj);
     }
+
+
 }

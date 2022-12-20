@@ -24,13 +24,6 @@ public class PlayerMovement : NetworkBehaviour
     // Camera
     [SerializeField] private CinemachineVirtualCamera cam;
 
-    // Ghost References
-    [SerializeField] public GameObject ghost;
-    [SerializeField] private GameObject ghost1;
-    [SerializeField] private GameObject ghost2;
-    [SerializeField] private GameObject ghost3;
-    [SerializeField] private GameObject ghost4;
-
     void Start ()
     {
         m_Animator = GetComponent<Animator> ();
@@ -42,16 +35,6 @@ public class PlayerMovement : NetworkBehaviour
             cam = CinemachineVirtualCamera.FindObjectOfType<CinemachineVirtualCamera>();
             cam.LookAt = this.gameObject.transform;
             cam.Follow = this.gameObject.transform;
-            ghost = GameObject.Find("Ghost1");
-            ghost.GetComponent<Observer>().player = this.transform;
-            ghost1 = GameObject.Find("Ghost2");
-            ghost1.GetComponent<Observer>().player = this.gameObject.transform;
-            ghost2 = GameObject.Find("Ghost3");
-            ghost2.GetComponent<Observer>().player = this.gameObject.transform;
-            ghost3 = GameObject.Find("Ghost4");
-            ghost3.GetComponent<Observer>().player = this.gameObject.transform;
-            ghost4 = GameObject.Find("Ghost5");
-            ghost4.GetComponent<Observer>().player = this.gameObject.transform;
         }
     }
 

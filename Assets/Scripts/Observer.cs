@@ -5,54 +5,48 @@ using Mirror;
 
 public class Observer : NetworkBehaviour
 {
-    public Transform player;
     public GameEnding gameEnding;
     private GameObject spiller;
 
     bool m_IsPlayerInRange;
     
+    [Client]
     void OnTriggerEnter (Collider other)
-    {
-        spiller = other.gameObject;
-        Debug.Log(spiller.GetComponent<PlayerMovement>().playername);
-        if (other.transform == player)
+    {        
+        if (other.tag == "player")
         {
+            spiller = other.gameObject;
+            
+            CheckVision(other.transform);
+            CmdPlayerCaught(other.gameObject.GetComponent<NetworkIdentity>());
             StartCoroutine(RequestHandler.Instance.DeletePlayer(spiller.GetComponent<PlayerMovement>().playername));
-            m_IsPlayerInRange = true;
-            Test();
         }
     }
 
     void OnTriggerExit (Collider other)
     {
-        if (other.transform == player)
-        {
-            m_IsPlayerInRange = false;
-        }
     }
 
-    void Update ()
+    void CheckVision (Transform player)
     {
-        if (m_IsPlayerInRange)
+        Vector3 direction = player.position - transform.position + Vector3.up;
+        Ray ray = new Ray(transform.position, direction);
+        RaycastHit raycastHit;
+        
+        if (Physics.Raycast (ray, out raycastHit))
         {
-            Vector3 direction = player.position - transform.position + Vector3.up;
-            Ray ray = new Ray(transform.position, direction);
-            RaycastHit raycastHit;
             
-            if (Physics.Raycast (ray, out raycastHit))
-            {
+            if (raycastHit.collider.transform == player)
+            {      
                 
-                if (raycastHit.collider.transform == player)
-                {      
-                    
-                }
             }
         }
     }
 
-    void Test()
+    [Command(requiresAuthority = false)]
+    void CmdPlayerCaught(NetworkIdentity networkIdentity)
     {   
-        gameEnding.CaughtPlayer ();
+        gameEnding.CaughtPlayer (networkIdentity);
     }
 
 }
