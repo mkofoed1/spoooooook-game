@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class RequestHandler : MonoBehaviour
 {
     //The local address of the server - URI (Uniform Resource Identifier)
-    private string URI = "http://localhost:3000/";
+    private string URI = "http://spiltek.eu-4.evennode.com/";
 
     // Start is called before the first frame update
     private void Start()
