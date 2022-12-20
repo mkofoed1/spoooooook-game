@@ -100,7 +100,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (other.tag == "coin")
         {
-            points = points + 1;
+            score = score + 1;
             Debug.Log(points); 
         }
     }
