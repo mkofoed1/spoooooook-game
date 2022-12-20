@@ -19,7 +19,6 @@ public class Coin : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {   
-        Debug.Log(other.tag);
         if (other.transform.tag == "player")
         {
             

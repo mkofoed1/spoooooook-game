@@ -15,6 +15,8 @@ public class GameNetworkManager : NetworkManager
         base.OnStartServer();
 
         NetworkServer.RegisterHandler<CreatePlayer>(OnCreatePlayer);
+        //foreach(string conn in )
+        Debug.Log(NetworkServer.connections.Values.ToString());
     }
 
     public override void OnClientConnect()
@@ -26,13 +28,15 @@ public class GameNetworkManager : NetworkManager
             name = "Joe Mama",
             score = 0,
         };
+
+        NetworkClient.Send(playermsg);
     }
 
     void OnCreatePlayer(NetworkConnectionToClient conn, CreatePlayer msg)
     {
         GameObject playerObj = Instantiate(playerPrefab);
 
-        playerObj.GetComponent<PlayerMovement>().name = msg.name;
+        playerObj.GetComponent<PlayerMovement>().playername = msg.name;
         playerObj.GetComponent<PlayerMovement>().score = msg.score;
 
         NetworkServer.AddPlayerForConnection(conn, playerObj);

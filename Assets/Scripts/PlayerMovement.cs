@@ -7,9 +7,8 @@ using Cinemachine;
 public class PlayerMovement : NetworkBehaviour
 {
     // Player References
-    public string name;
+    public string playername;
     public int score;
-    public int points = 0;
 
     // Movement References
     public float turnSpeed = 20f;
@@ -101,7 +100,6 @@ public class PlayerMovement : NetworkBehaviour
         if (other.tag == "coin")
         {
             score = score + 1;
-            Debug.Log(points); 
         }
     }
 }

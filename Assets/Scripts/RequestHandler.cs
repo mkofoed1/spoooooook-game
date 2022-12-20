@@ -15,7 +15,7 @@ public class RequestHandler : MonoBehaviour
     private void Start()
     {
         //Starts GetPlayer() as a Coroutine, i.e. a routine that can span several frames, note coroutines needs to be of the type IEnumerator
-        StartCoroutine(ReadPlayer("Hej Magnus"));
+        //StartCoroutine(ReadPlayer("Hej Magnus"));
     }
 
     // Update is called once per frame
