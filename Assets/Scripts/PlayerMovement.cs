@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Cinemachine;
+using TMPro;
 
 public class PlayerMovement : NetworkBehaviour
 {
     // Player References
     public string playername;
+    [SyncVar]
     public int score;
+    public GameObject nameplate;
 
     // Movement References
-    public float turnSpeed = 20f;
-    
+    public float turnSpeed = 20f;    
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
 
@@ -36,11 +38,21 @@ public class PlayerMovement : NetworkBehaviour
             cam.LookAt = this.gameObject.transform;
             cam.Follow = this.gameObject.transform;
         }
+
+        nameplate = gameObject.transform.GetChild(2).gameObject;
+        UpdateNamePlate();
     }
 
 
+    void UpdateNamePlate()
+    {
+        nameplate.GetComponentInChildren<TextMeshProUGUI>().text = playername + "\n" + "Score: " + score;
+    }
     void FixedUpdate ()
     {
+        // Nameplate Rotate towards Camera
+        nameplate.transform.rotation = Quaternion.LookRotation(cam.transform.position - transform.position) * Quaternion.Euler(0,180,0);
+
         if(!isLocalPlayer)
         {
             return;
@@ -84,6 +96,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             score++;
             StartCoroutine(RequestHandler.Instance.UpdatePlayer(playername, score));
+            UpdateNamePlate();
         }
     }
 }

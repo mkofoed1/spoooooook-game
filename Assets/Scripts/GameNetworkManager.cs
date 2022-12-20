@@ -69,7 +69,6 @@ public class GameNetworkManager : NetworkManager
     void OnCreatePlayer(NetworkConnectionToClient conn, CreatePlayer msg)
     {
         GameObject playerObj = Instantiate(playerPrefab);
-
         playerObj.GetComponent<PlayerMovement>().playername = msg.name;
         playerObj.GetComponent<PlayerMovement>().score = msg.score;
         StartCoroutine(RequestHandler.Instance.CreatePlayer(msg.name, msg.score));
