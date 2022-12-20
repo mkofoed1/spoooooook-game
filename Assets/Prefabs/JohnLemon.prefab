@@ -876,7 +876,7 @@ GameObject:
   - component: {fileID: 9046868152324695023}
   m_Layer: 0
   m_Name: JohnLemon
-  m_TagString: Untagged
+  m_TagString: player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -964,6 +964,13 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   turnSpeed: 20
+  points: 0
+  cam: {fileID: 0}
+  ghost: {fileID: 0}
+  ghost1: {fileID: 0}
+  ghost2: {fileID: 0}
+  ghost3: {fileID: 0}
+  ghost4: {fileID: 0}
 --- !u!82 &355967702596757054
 AudioSource:
   m_ObjectHideFlags: 0

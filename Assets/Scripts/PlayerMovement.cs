@@ -9,9 +9,11 @@ public class PlayerMovement : NetworkBehaviour
     // Player References
     public string name;
     public int score;
+    public int points = 0;
 
     // Movement References
     public float turnSpeed = 20f;
+    
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
 
@@ -92,5 +94,14 @@ public class PlayerMovement : NetworkBehaviour
     {
         m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
         m_Rigidbody.MoveRotation (m_Rotation);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "coin")
+        {
+            points = points + 1;
+            Debug.Log(points); 
+        }
     }
 }
